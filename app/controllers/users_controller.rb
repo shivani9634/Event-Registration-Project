@@ -1,6 +1,19 @@
 class UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
+  skip_before_action :authorize_request, only: [ :login, :create ]
   before_action :set_user, only: [ :show, :update, :destroy ]
+
+
+  def login
+    @user = User.find_by(email_id: params[:user][:email_id])
+
+    if @user && @user.authenticate(params[:user][:password])
+      token = jwt_encode(user_id: @user.id)
+      render json: { token: token, role: @user.role }, status: :ok
+    else
+      render json: { error: "Invalid email or password" }, status: :unauthorized
+    end
+  end
 
   # GET /users
   def index

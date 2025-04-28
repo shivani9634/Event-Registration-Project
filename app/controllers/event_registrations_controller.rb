@@ -1,24 +1,30 @@
 class EventRegistrationsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :set_event_registration, only: [ :show, :update ]
+  before_action :set_event_registration, only: [ :update ]
+  before_action :authorize_request, except: [ :index, :show, :create ]
 
   def create
-    @registration = EventRegistration.new(registration_params)
+    @event_registration = EventRegistration.new(registration_params)
+    @event_registration.registration_date = Time.current
 
-    if params[:event_registration][:discount_code].present?
-      @registration.discount_code = DiscountCode.find_by(id: params[:event_registration][:discount_code].to_i)
+    # Check if the discount code is present and apply the discount
+    if @event_registration.discount_code.present?
+      discount_calculator = DiscountCalculatorService.new(@event_registration, @event_registration.discount_code)
+      @event_registration.final_fee = discount_calculator.calculate_final_fee
+    else
+      @event_registration.final_fee = @event_registration.event.base_cost
     end
 
-    if @registration.save
-      render json: @registration, status: :created
+    # Save the registration
+    if @event_registration.save
+      render json: { message: "Registration successful!" }, status: :ok
     else
-      render json: @registration.errors, status: :unprocessable_entity
+      render json: { errors: @event_registration.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-
   def index
-    @registrations = EventRegistration.where(user_id: params[:user_id])
+    @registrations = EventRegistration.all
     render json: @registrations
   end
 
@@ -41,6 +47,6 @@ class EventRegistrationsController < ApplicationController
   end
 
   def registration_params
-    params.require(:event_registration).permit(:event_id, :user_id, :id_proof, :discount_code_id, :final_fee, :registration_date, :status, :no_of_people)
+    params.require(:event_registration).permit(:event_id, :user_id, :id_proof, :discount_code_id, :status, :registration_date, :no_of_people)
   end
 end

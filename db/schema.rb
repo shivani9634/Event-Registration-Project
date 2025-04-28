@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_25_050356) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_28_072804) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,7 +40,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_25_050356) do
   create_table "event_registrations", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.bigint "user_id", null: false
-    t.bigint "discount_code_id"
+    t.integer "discount_code_id"
     t.string "id_proof", null: false
     t.decimal "final_fee", precision: 8, scale: 2, null: false
     t.datetime "registration_date", null: false
