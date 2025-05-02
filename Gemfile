@@ -17,6 +17,17 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem "rack-cors"
+
+gem "cancancan", "~> 3.0"
+
+gem "annotate"
+
+gem "rubocop", require: false
+
+
+
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
