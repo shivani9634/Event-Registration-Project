@@ -26,6 +26,7 @@ class Ability
         can :read, DiscountCode
         can [ :read, :create ], Payment, event_registration: { user_id: user.id }
         can :update, Payment, event_registration: { user_id: user.id }
+        can :logout, User
       else
       can :read, Event
       end

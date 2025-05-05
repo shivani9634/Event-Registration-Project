@@ -1,8 +1,3 @@
-<<<<<<< Updated upstream
-class ApplicationController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
-  allow_browser versions: :modern
-=======
 class ApplicationController < ActionController::API
   include CanCan::ControllerAdditions
   before_action :authorize_request, except: [ :login, :create ]
@@ -18,9 +13,11 @@ class ApplicationController < ActionController::API
   def authorize_request
     header = request.headers["Authorization"]
     token = header.split(" ").last if header
-
     decoded = jwt_decode(token)
-    @current_user = User.find_by(id: decoded[:user_id]) if decoded
+
+    if decoded && !JtiBlacklist.blacklisted?(decoded[:jti])
+      @current_user = User.find_by(id: decoded[:user_id])
+    end
 
     render json: { error: "Unauthorized" }, status: :unauthorized unless @current_user
   end
@@ -31,8 +28,10 @@ class ApplicationController < ActionController::API
 
   def jwt_encode(payload, exp = 24.hours.from_now)
     payload[:exp] = exp.to_i
+    payload[:jti] = SecureRandom.uuid   # add jti
     JWT.encode(payload, secret_key)
   end
+
 
   def jwt_decode(token)
     decoded = JWT.decode(token, secret_key)[0]
@@ -44,5 +43,4 @@ class ApplicationController < ActionController::API
   def secret_key
     Rails.application.secret_key_base || Rails.application.credentials.secret_key_base
   end
->>>>>>> Stashed changes
 end

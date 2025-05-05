@@ -2,17 +2,41 @@ class UsersController < ApplicationController
   before_action :set_user, only: [ :show, :update, :destroy ]
   skip_before_action :authorize_request, only: [ :login, :create, :show, :update, :index ]
   skip_load_and_authorize_resource only: [ :login, :create ]
+  before_action :authorize_request, only: [ :logout ]
+
+
+
   load_and_authorize_resource
 
   def login
     @user = User.find_by(email_id: params[:email_id])
     if @user && @user.authenticate(params[:password])
-      token = jwt_encode(user_id: @user.id)
-      render json: { token: token, role: @user.role.role_type }, status: :ok
+      token = jwt_encode(user_id: @user.id)                    # Encode the token
+      decoded_token = jwt_decode(token)                        # Decode to extract jti
+      render json: {
+        token: token,
+        role: @user.role.role_type
+      }, status: :ok
     else
       render json: { error: "Invalid email or password" }, status: :unauthorized
     end
   end
+
+
+  def logout
+    header = request.headers["Authorization"]
+    puts header
+    token = header.split(" ").last if header
+    decoded = jwt_decode(token)
+
+    if decoded && decoded[:jti]
+      JtiBlacklist.add(decoded[:jti], decoded[:exp])
+      render json: { message: "Logged out successfully" }
+    else
+      render json: { error: "Invalid token" }, status: :unprocessable_entity
+    end
+  end
+
 
   def index
     users = User.all

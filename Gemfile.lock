@@ -79,6 +79,7 @@ GEM
       rake (>= 0.8.7)
     ast (2.4.3)
     base64 (0.2.0)
+    bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
     benchmark (0.4.0)
     bigdecimal (3.1.9)
@@ -131,6 +132,8 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.10.2)
+    jwt (2.10.1)
+      base64
     kamal (2.5.3)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -251,6 +254,10 @@ GEM
     rake (13.2.1)
     rdoc (6.13.1)
       psych (>= 4.0.0)
+    redis (5.4.0)
+      redis-client (>= 0.22.0)
+    redis-client (0.24.0)
+      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.1)
       io-console (~> 0.5)
@@ -358,11 +365,8 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-<<<<<<< Updated upstream
-=======
   annotate
-  bcrypt (~> 3.1.7)
->>>>>>> Stashed changes
+  bcrypt
   bootsnap
   brakeman
   cancancan (~> 3.0)
@@ -370,12 +374,14 @@ DEPENDENCIES
   debug
   importmap-rails
   jbuilder
+  jwt
   kamal
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
   rack-cors
   rails (~> 8.0.2)
+  redis
   rubocop
   rubocop-rails-omakase
   selenium-webdriver
