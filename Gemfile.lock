@@ -74,8 +74,12 @@ GEM
       uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+    annotate (2.6.5)
+      activerecord (>= 2.3.0)
+      rake (>= 0.8.7)
     ast (2.4.3)
     base64 (0.2.0)
+    bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
     benchmark (0.4.0)
     bigdecimal (3.1.9)
@@ -85,6 +89,7 @@ GEM
     brakeman (7.0.2)
       racc
     builder (3.3.0)
+    cancancan (3.6.1)
     capybara (3.40.0)
       addressable
       matrix
@@ -127,6 +132,8 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.10.2)
+    jwt (2.10.1)
+      base64
     kamal (2.5.3)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -205,6 +212,8 @@ GEM
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.13)
+    rack-cors (2.0.2)
+      rack (>= 2.0.0)
     rack-session (2.1.0)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -245,6 +254,10 @@ GEM
     rake (13.2.1)
     rdoc (6.13.1)
       psych (>= 4.0.0)
+    redis (5.4.0)
+      redis-client (>= 0.22.0)
+    redis-client (0.24.0)
+      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.1)
       io-console (~> 0.5)
@@ -352,17 +365,24 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  annotate
+  bcrypt
   bootsnap
   brakeman
+  cancancan (~> 3.0)
   capybara
   debug
   importmap-rails
   jbuilder
+  jwt
   kamal
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
+  rack-cors
   rails (~> 8.0.2)
+  redis
+  rubocop
   rubocop-rails-omakase
   selenium-webdriver
   solid_cable
