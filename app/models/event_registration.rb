@@ -33,7 +33,7 @@ class EventRegistration < ApplicationRecord
   # Basic Validations
   validates :id_proof, presence: true
   validates :registration_date, presence: true
-  validates :status, presence: true, inclusion: { in: [ "Pending", "Confirmed", "Cancelled" ] }
+  validates :status, inclusion: { in: %w[pending confirmed cancelled] }
   validates :no_of_people, presence: true, numericality: { only_integer: true, greater_than: 0 }
 
   # Custom Validations

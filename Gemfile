@@ -21,6 +21,10 @@ gem "rack-cors"
 
 gem "cancancan", "~> 3.0"
 
+gem "rspec-rails"
+
+
+
 gem "annotate"
 
 gem "rubocop", require: false
@@ -30,6 +34,12 @@ gem "redis"
 gem "jwt"
 
 gem "bcrypt"
+
+
+ group :test do
+  gem "shoulda-matchers", "~> 5.0"
+end
+
 
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
@@ -71,6 +81,7 @@ group :development do
   gem "web-console"
 end
 
+gem "factory_bot_rails"
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"

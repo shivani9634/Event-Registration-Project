@@ -23,6 +23,6 @@ class Payment < ApplicationRecord
   validates :amount, presence: true, numericality: { greater_than: 0 }
   validates :payment_mode, presence: true
   validates :payment_date, presence: true
-  validates :status, presence: true
+  validates :status, presence: true, inclusion: { in: %w[pending confirmed cancelled] }
   validates :transaction_id, presence: true, uniqueness: true
 end

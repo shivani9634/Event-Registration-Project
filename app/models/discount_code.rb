@@ -30,7 +30,8 @@ class DiscountCode < ApplicationRecord
   validates :event_id, presence: true
   validates :user_id, presence: true
   validates :discount_code, presence: true, uniqueness: true, length: { minimum: 3, maximum: 30 }
-  validates :discount_type, presence: true, inclusion: { in: [ "percentage", "fixed" ], message: "%{value} is not a valid discount type" }
+  validates :discount_type, inclusion: { in: %w[percentage fixed] }
+
   validates :discount_value, presence: true, numericality: { greater_than: 0 }
   validates :valid_from, presence: true
   validates :valid_until, presence: true
